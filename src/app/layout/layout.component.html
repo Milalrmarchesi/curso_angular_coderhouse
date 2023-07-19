@@ -1,0 +1,30 @@
+<div class="toolbar">
+    <mat-toolbar color="primary">
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span (click)="abrirHome()" class="span-hover">Students management</span>
+    </mat-toolbar>      
+</div>
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #sidenav class="example-sidenav" mode="side">
+      <div (click)="abrirAlumnos()" class="button-menu">
+        <span class="span-hover">Students</span>
+      </div>
+      <hr>
+    </mat-drawer>
+    <div class="example-sidenav-content main-content">
+      <div *ngIf="showHome">
+        <app-home></app-home>
+      </div>  
+      <div *ngIf="showAlumnos">
+        <app-lista-alumnos></app-lista-alumnos>
+      </div>  
+    </div>
+  
+  </mat-drawer-container>
+<!-- 
+<div class="content">
+    <ng-content></ng-content>
+</div>
+-->  

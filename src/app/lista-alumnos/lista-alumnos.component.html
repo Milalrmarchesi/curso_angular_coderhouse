@@ -1,0 +1,143 @@
+<div *ngIf="showList">
+    <h1 bigTitle>List of students</h1>
+    <button class="btn btn-dark mb-4" (click)="addNewStudent()">Add new student</button>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID. </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="fullname">
+            <th mat-header-cell *matHeaderCellDef> Full Name </th>
+            <td mat-cell *matCellDef="let element"> {{element | fullname }} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="score">
+            <th mat-header-cell *matHeaderCellDef> Score </th>
+            <td mat-cell *matCellDef="let element"> {{element.score}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="primary" (click)="editStudent(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteStudent(element.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+
+<div *ngIf="showAddForm" class="container">
+    <form [formGroup]="studentForm" (ngSubmit)="saveStudent()" class="needs-validation" novalidate>      
+      <div class="form-group mb-2">
+        <label for="name">Name:</label>
+        <input type="text" id="name" formControlName="name" class="form-control" required />
+        <div *ngIf="studentForm.get('name')?.invalid && (studentForm.get('name')?.dirty || studentForm.get('name')?.touched)" class="alert alert-danger">
+          <div *ngIf="studentForm.get('name')?.errors?.['required']">
+            Name is required
+          </div>
+        </div>
+      </div>
+    
+      <div class="form-group mb-2">
+          <label for="lastname">Last name:</label>
+          <input type="text" id="lastname" formControlName="lastname" class="form-control" required />
+          <div *ngIf="studentForm.get('lastname')?.invalid && (studentForm.get('lastname')?.dirty || studentForm.get('lastname')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentForm.get('lastname')?.errors?.['required']">
+                Last name is required
+              </div>
+          </div>
+      </div>
+    
+      <div class="form-group mb-2">
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" class="form-control" required />
+        <div *ngIf="studentForm.get('email')?.invalid && (studentForm.get('email')?.dirty || studentForm.get('email')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentForm.get('email')?.errors?.['required']">
+                Email is required and must be a valid email address
+              </div>
+              <div *ngIf="studentForm.get('email')?.errors?.['email']">
+                Email format invalid
+              </div>              
+        </div>
+      </div>
+    
+      <div class="form-group mb-2">
+        <label for="score">Score:</label>
+        <input type="number" id="score" formControlName="score" class="form-control" required />
+        <div *ngIf="studentForm.get('score')?.invalid && (studentForm.get('score')?.dirty || studentForm.get('score')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentForm.get('score')?.errors?.['required']">
+                Score is required and must be a number
+              </div>
+              <div *ngIf="studentForm.get('score')?.errors?.['min']">
+                Score minimum value is 1
+              </div>
+              <div *ngIf="studentForm.get('score')?.errors?.['max']">
+                Score maximum value is 10
+              </div>                            
+        </div>
+      </div>
+    
+      <button type="submit" [disabled]="!studentForm.valid" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+<div *ngIf="showEditForm">
+  <form [formGroup]="studentEditForm" (ngSubmit)="saveEditedStudent()" class="needs-validation" novalidate>      
+    <div class="form-group mb-2">
+      <label for="name">Name:</label>
+      <input type="text" id="name" formControlName="name" class="form-control" required />
+          <div *ngIf="studentEditForm.get('name')?.invalid && (studentEditForm.get('name')?.dirty || studentEditForm.get('name')?.touched)" class="alert alert-danger">
+            <div *ngIf="studentEditForm.get('name')?.errors?.['required']">
+                Name is required
+            </div>
+          </div>
+    </div>
+  
+    <div class="form-group mb-2">
+        <label for="lastname">Last name:</label>
+        <input type="text" id="lastname" formControlName="lastname" class="form-control" required />
+        <div *ngIf="studentEditForm.get('lastname')?.invalid && (studentEditForm.get('lastname')?.dirty || studentEditForm.get('lastname')?.touched)" class="alert alert-danger">
+            <div *ngIf="studentEditForm.get('lastname')?.errors?.['required']">
+              Last name is required
+            </div>
+        </div>
+    </div>
+  
+    <div class="form-group mb-2">
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email" class="form-control" required />
+      <div *ngIf="studentEditForm.get('email')?.invalid && (studentEditForm.get('email')?.dirty || studentEditForm.get('email')?.touched)" class="alert alert-danger">
+            <div *ngIf="studentEditForm.get('email')?.errors?.['required']">
+              Email is required and must be a valid email address
+            </div>
+      </div>
+    </div>
+  
+    <div class="form-group mb-2">
+      <label for="score">Score:</label>
+      <input type="number" id="score" formControlName="score" class="form-control" required />
+      <div *ngIf="studentEditForm.get('score')?.invalid && (studentEditForm.get('score')?.dirty || studentEditForm.get('score')?.touched)" class="alert alert-danger">
+            <div *ngIf="studentEditForm.get('score')?.errors?.['required']">
+              Score is required and must be a number
+            </div>
+      </div>
+    </div>
+  
+    <button type="submit" [disabled]="!studentEditForm.valid" class="btn btn-primary">Save</button>
+  </form>
+</div>
