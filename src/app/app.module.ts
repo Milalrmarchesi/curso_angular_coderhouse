@@ -8,7 +8,6 @@ import { MaterialModule } from './modules/material.module';
 import { LayoutComponent } from './layout/layout.component';
 import { ListaAlumnosComponent } from './lista-alumnos/lista-alumnos.component';
 import { HomeComponent } from './home/home.component';
-import { TablaComponent } from './tabla/tabla.component';
 import { FullnamePipe } from './lista-alumnos/fullname.pipe';
 import { BigTitleDirective } from './lista-alumnos/big-title.directive';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +18,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     LayoutComponent,
     ListaAlumnosComponent,
     HomeComponent,
-    TablaComponent,
     FullnamePipe,
     BigTitleDirective
   ],

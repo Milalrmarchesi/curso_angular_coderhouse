@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentInterface } from './alumno.interface';
-
+import { StudentsService } from '../services/students/students.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -12,7 +14,7 @@ import { StudentInterface } from './alumno.interface';
 
 export class ListaAlumnosComponent implements OnInit {
   displayedColumns: string[] = ['id', 'fullname', 'email', 'score', 'actions'];
-  dataSource!: StudentInterface[];
+  dataSource: StudentInterface[] = [];
   showList:boolean = true;
   showAddForm:boolean = false;
   showEditForm:boolean = false;
@@ -20,7 +22,7 @@ export class ListaAlumnosComponent implements OnInit {
   currentStudent!: StudentInterface;
   studentEditForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private studentsService: StudentsService) {}
 
   ngOnInit() {
     this.loadStudents();
@@ -28,12 +30,10 @@ export class ListaAlumnosComponent implements OnInit {
   }
 
   loadStudents(){
-    this.dataSource = [
-      {id: 0, name: 'Milagros', lastname: "Marchesi", email: 'mili@gmail.com', score: 10},
-      {id: 1, name: 'Lucas', lastname: "Etcheverry", email: 'lucas@gmail.com', score: 8},
-      {id: 2, name: 'Facundo', lastname: "Gomez", email: 'facu@gmail.com', score: 7},
-      {id: 3, name: 'Morena', lastname: "Rial", email: 'more@gmail.com', score: 9}
-    ];
+    let dataSource$ = this.studentsService.getData();
+    dataSource$.subscribe((studentsArray) => {
+      this.dataSource.push(studentsArray);
+    });    
   }
 
   initializeForm() {
@@ -56,6 +56,7 @@ export class ListaAlumnosComponent implements OnInit {
     if (this.studentForm.valid) {
       let student = this.studentForm.value;
       student["id"] = this.getNewStudentId()
+      student["enabled"] = true;
       this.currentStudent = student;
       this.dataSource.push(this.currentStudent);
       this.showList = true;

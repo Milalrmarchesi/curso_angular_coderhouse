@@ -5,4 +5,5 @@ export interface StudentInterface {
     lastname: string;
     email: string;
     score: number;
+    enabled: Boolean;
 }
