@@ -1,4 +1,8 @@
+
 .bienvenida {
-    font-weight:lighter;
-    font-size: medium;
+    display: flex; /* Utilizamos flexbox para centrar horizontalmente */
+    justify-content: center; /* Centra horizontalmente el contenido del flex container */
+    font-size: 2rem; /* Aumenta el tamaño del texto (2 rem) */
+    font-weight: bold; /* Opcional: Puedes agregar negrita al texto si lo deseas */
+    color: #007bff; /* Opcional: Puedes cambiar el color del texto según tus preferencias */
 }

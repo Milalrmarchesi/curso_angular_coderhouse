@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentInterface } from './alumno.interface';
 import { StudentsService } from '../services/students/students.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { StudentDetailComponent } from './student-detail/student-detail.component'
+
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -14,75 +17,130 @@ import { map } from 'rxjs/operators';
 
 export class ListaAlumnosComponent implements OnInit {
   displayedColumns: string[] = ['id', 'fullname', 'email', 'score', 'actions'];
-  dataSource: StudentInterface[] = [];
+  dataSource$!: Observable<StudentInterface[]>;
   showList:boolean = true;
   showAddForm:boolean = false;
   showEditForm:boolean = false;
   studentForm!: FormGroup;
   currentStudent!: StudentInterface;
   studentEditForm!: FormGroup;
+  dataLoaded: boolean = false;
+  searchForm!: FormGroup;
+  filteredStudents$!: Observable<StudentInterface[]>;
+  students: StudentInterface[] = [];
 
-  constructor(private formBuilder: FormBuilder, private studentsService: StudentsService) {}
+
+  constructor(private formBuilder: FormBuilder, private studentsService: StudentsService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadStudents();
     this.initializeForm();
+    this.initializeSearch();
+    
   }
-
-  loadStudents(){
-    let dataSource$ = this.studentsService.getData();
-    dataSource$.subscribe((studentsArray) => {
-      this.dataSource.push(studentsArray);
-    });    
+  
+  loadStudents() {
+    this.dataLoaded = false;
+  
+    this.studentsService.getData().subscribe((studentsArray) => {
+      this.students = studentsArray;
+      this.filteredStudents$ = of(studentsArray);
+      this.dataSource$ = of(studentsArray);   
+      this.dataLoaded = true;
+    });
   }
 
   initializeForm() {
+
     this.studentForm = this.formBuilder.group({
       name: [null, Validators.required],
       lastname: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       score: [null, [Validators.required, Validators.min(1), Validators.max(10)]]
     });
-    
+
     this.studentEditForm = this.formBuilder.group({
       name: [null, Validators.required],
       lastname: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       score: [null, [Validators.required, Validators.min(1), Validators.max(10)]]
     });
+
+    this.searchForm = this.formBuilder.group({
+      searchQuery: ['']
+    });
+
+    const searchControl = this.searchForm.get('searchQuery');
+
+    if (searchControl) {
+      this.filteredStudents$ = searchControl.valueChanges.pipe(
+        startWith(''),
+        debounceTime(300), 
+        distinctUntilChanged(), 
+        map((query: string) => this.filterStudents(query))
+      );
+    }
+  }
+
+  initializeSearch() {
+    const searchControl = this.searchForm.get('searchQuery');
+  
+    if (searchControl) {
+      searchControl.valueChanges.pipe(
+        startWith(''),
+        debounceTime(300),
+        distinctUntilChanged(),
+        map((query: string) => this.filterStudents(query))
+      ).subscribe(filteredStudents => {
+        this.filteredStudents$ = of(filteredStudents);
+      });
+    }
+  }
+
+  filterStudents(query: string) {
+    if (this.students) {
+      return this.students.filter(
+        (student: StudentInterface) =>
+          student.name.toLowerCase().includes(query.toLowerCase()) ||
+          student.lastname.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+    return [];
   }
 
   saveStudent() {
     if (this.studentForm.valid) {
-      let student = this.studentForm.value;
-      student["id"] = this.getNewStudentId()
-      student["enabled"] = true;
-      this.currentStudent = student;
-      this.dataSource.push(this.currentStudent);
+      const newStudent = this.studentForm.value;
+      this.getNewStudentId().subscribe((id) => {
+        newStudent['id'] = id;
+      });
+      console.log("newStudent['id']: ", newStudent['id']);
+      newStudent['enabled'] = true;
+  
+      this.filteredStudents$ = this.filteredStudents$.pipe(
+        map((students) => [...students, newStudent])
+      );
+  
       this.showList = true;
       this.showAddForm = false;
-      this.showEditForm = false;   
-      this.studentForm.reset();  
+      this.showEditForm = false;
+      this.studentForm.reset();
     }
   }
 
-  saveEditedStudent(){
+  saveEditedStudent() {
     if (this.studentEditForm.valid) {
-      let student = this.studentEditForm.value;
-      student["id"] = this.currentStudent.id;
-      let new_array_source = [];
-      for(let student_row of this.dataSource){
-        if(student.id != student_row.id){
-          new_array_source.push(student_row);
-        } else{
-          new_array_source.push(student);
-        }
-      }    
-      this.dataSource = new_array_source;
+      const editedStudent = this.studentEditForm.value;
+      editedStudent['id'] = this.currentStudent.id;
+  
+      this.filteredStudents$ = this.filteredStudents$.pipe(
+        map((students) => students.map((student) => (student.id !== editedStudent.id ? student : editedStudent)))
+      );
+  
       this.showList = true;
       this.showAddForm = false;
-      this.showEditForm = false;   
-      this.studentEditForm.reset();  
+      this.showEditForm = false;
+      this.studentEditForm.reset();
     }
   }
   
@@ -101,25 +159,46 @@ export class ListaAlumnosComponent implements OnInit {
     this.studentEditForm.setValue(data_to_set);
   }
 
-  deleteStudent(student_id:number){
-    let new_array = [];
-    for(let student of this.dataSource){
-      if(student.id != student_id){
-        new_array.push(student);
-      }
-    }    
-    this.dataSource = new_array;
-
+  deleteStudent(student_id: number) {
+    this.filteredStudents$ = this.filteredStudents$.pipe(
+      map((students) => students.filter((student) => student.id !== student_id))
+    );
   }
 
-  getNewStudentId(){
-    let max_value = 0;
-    for(let student of this.dataSource){
-      if(student.id > max_value){
-        max_value = student.id;
-      }
-    }
-    return (max_value + 1);
+  getNewStudentId() {
+    return this.dataSource$.pipe(
+      map((students) => {
+        let max_value = 0;
+        for (let student of students) {
+          if (student.id > max_value) {
+            max_value = student.id;
+          }
+        }
+        return max_value + 1;
+      })
+    );
   }
+
+
+  showStudentDetails(student_param: StudentInterface) {
+    let student_from_promise = this.studentsService.getStudentById(student_param.id);
+
+    student_from_promise
+      .then((student: StudentInterface | null) => {
+        if (student) {
+          console.log('Student found by id:', student);
+          const dialogRef = this.dialog.open(StudentDetailComponent, {
+            width: '30rem',
+            data: student 
+          });
+        } else {
+          console.log('No student was found with the provided ID.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error getting student:', error);
+      });
+  }
+  
 
 }

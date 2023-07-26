@@ -14,11 +14,7 @@
       <hr>
     </mat-drawer>
     <div class="example-sidenav-content main-content">
-      <div *ngIf="showHome">
-        <app-home></app-home>
-      </div>  
-      <div *ngIf="showAlumnos">
-        <app-lista-alumnos></app-lista-alumnos>
-      </div>  
+      <app-home *ngIf="showHome" style="width: 100%;"></app-home>
+      <app-lista-alumnos *ngIf="showAlumnos"></app-lista-alumnos>
     </div>
 </mat-drawer-container>

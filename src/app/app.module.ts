@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { FullnamePipe } from './lista-alumnos/fullname.pipe';
 import { BigTitleDirective } from './lista-alumnos/big-title.directive';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StudentDetailComponent } from './lista-alumnos/student-detail/student-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ListaAlumnosComponent,
     HomeComponent,
     FullnamePipe,
-    BigTitleDirective
+    BigTitleDirective,
+    StudentDetailComponent
   ],
   imports: [
     BrowserModule,

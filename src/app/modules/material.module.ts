@@ -9,6 +9,8 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTableModule} from '@angular/material/table';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -17,7 +19,7 @@ import {MatTableModule} from '@angular/material/table';
     CommonModule
   ],
   exports: [MatButtonModule, MatCardModule,MatIconModule, MatInputModule,
-     MatSlideToggleModule, MatBadgeModule, MatToolbarModule, MatSidenavModule, MatTableModule ]
+     MatSlideToggleModule, MatBadgeModule, MatToolbarModule, MatSidenavModule, MatTableModule, MatDialogModule, MatProgressBarModule ]
 
 })
 export class MaterialModule { }
