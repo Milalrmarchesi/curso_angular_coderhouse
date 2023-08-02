@@ -12,7 +12,15 @@
         <span class="span-hover">Students</span>
       </div>
       <hr>
-    </mat-drawer>
+      <div (click)="abrirClases()" class="button-menu">
+        <span class="span-hover">Classes</span>
+      </div>
+      <hr>
+      <div (click)="abrirCursos()" class="button-menu">
+        <span class="span-hover">Courses</span>
+      </div>
+      <hr>      
+    </mat-drawer> 
     <div class="example-sidenav-content main-content">
       <!--
       <app-home *ngIf="showHome" style="width: 100%;"></app-home>

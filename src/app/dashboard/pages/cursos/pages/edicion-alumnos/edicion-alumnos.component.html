@@ -1,0 +1,25 @@
+<div>
+    <form [formGroup]="studentEditForm" (ngSubmit)="saveEditedStudent()" class="needs-validation" novalidate>      
+      <div class="form-group mb-2">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" formControlName="subject" class="form-control" required />
+            <div *ngIf="studentEditForm.get('subject')?.invalid && (studentEditForm.get('subject')?.dirty || studentEditForm.get('subject')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentEditForm.get('subject')?.errors?.['required']">
+                  Subject is required
+              </div>
+            </div>
+      </div>
+    
+      <div class="form-group mb-2">
+          <label for="classes">Classes:</label>
+          <input type="text" id="classes" formControlName="classes" class="form-control" required />
+          <div *ngIf="studentEditForm.get('classes')?.invalid && (studentEditForm.get('classes')?.dirty || studentEditForm.get('classes')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentEditForm.get('classes')?.errors?.['required']">
+                Classes is required
+              </div>
+          </div>
+      </div>
+    
+      <button type="submit" [disabled]="!studentEditForm.valid" class="btn btn-primary">Save</button>
+    </form>
+</div>

@@ -20,13 +20,11 @@ export class EdicionAlumnosComponent {
 
   initializeForm() {
     this.studentEditForm = this.formBuilder.group({
-      name: [null, Validators.required],
-      lastname: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      score: [null, [Validators.required, Validators.min(1), Validators.max(10)]]
+      subject: [null, Validators.required],
+      classes: [null, Validators.required]
     });
     let student = this.studentsService.current;
-    let data_to_set = {name: student.name, lastname: student.lastname, email: student.email, score: student.score}
+    let data_to_set = {subject: student.subject, classes: student.classes};
     this.studentEditForm.setValue(data_to_set);
   }
 
@@ -37,7 +35,7 @@ export class EdicionAlumnosComponent {
       editedStudent['enabled'] = true;
       this.studentsService.saveEditedStudent(editedStudent);
       this.studentEditForm.reset();
-      this.router.navigate(['/dashboard', 'alumnos']);
+      this.router.navigate(['/dashboard', 'cursos']);
     }
   }
 }

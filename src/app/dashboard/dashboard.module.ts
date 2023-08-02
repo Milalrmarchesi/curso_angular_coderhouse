@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LayoutComponent } from './layout/layout.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AlumnosModule } from './pages/alumnos/alumnos.module';
+import { ClasesModule } from './pages/clases/clases.module';
+import { CursosModule } from './pages/cursos/cursos.module'; 
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { AlumnosModule } from './pages/alumnos/alumnos.module';
     MaterialModule,
     ReactiveFormsModule,
     DashboardRoutingModule,
-    AlumnosModule
+    AlumnosModule,
+    ClasesModule,
+    CursosModule
   ]
 })
 export class DashboardModule { }

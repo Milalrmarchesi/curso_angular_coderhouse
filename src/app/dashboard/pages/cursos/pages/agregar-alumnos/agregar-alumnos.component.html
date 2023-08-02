@@ -1,0 +1,25 @@
+<div class="container">
+    <form [formGroup]="studentForm" (ngSubmit)="saveStudent()" class="needs-validation" novalidate>      
+      <div class="form-group mb-2">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" formControlName="subject" class="form-control" required />
+            <div *ngIf="studentForm.get('subject')?.invalid && (studentForm.get('subject')?.dirty || studentForm.get('subject')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentForm.get('subject')?.errors?.['required']">
+                  Subject is required
+              </div>
+            </div>
+      </div>
+    
+      <div class="form-group mb-2">
+          <label for="classes">Classes:</label>
+          <input type="text" id="classes" formControlName="classes" class="form-control" required />
+          <div *ngIf="studentForm.get('classes')?.invalid && (studentForm.get('classes')?.dirty || studentForm.get('classes')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentForm.get('classes')?.errors?.['required']">
+                Classes is required
+              </div>
+          </div>
+      </div>
+    
+      <button type="submit" [disabled]="!studentForm.valid" class="btn btn-primary">Save</button>
+    </form>
+</div>

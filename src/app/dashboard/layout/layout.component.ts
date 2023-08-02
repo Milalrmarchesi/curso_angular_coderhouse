@@ -19,6 +19,13 @@ export class LayoutComponent {
   abrirHome(){
     this.router.navigate(['/dashboard', 'home'], {});
   }
+  abrirClases(){
+    this.router.navigate(['/dashboard', 'clases']);
+  }
+
+  abrirCursos(){
+    this.router.navigate(['/dashboard', 'cursos']);
+  }
 
   logout(): void {
     this.router.navigate(['auth', 'login'], {})

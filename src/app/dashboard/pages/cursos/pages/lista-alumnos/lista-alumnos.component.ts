@@ -44,10 +44,8 @@ export class ListaAlumnosComponent {
   initializeForm() {
 
     this.studentForm = this.formBuilder.group({
-      name: [null, Validators.required],
-      lastname: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      score: [null, [Validators.required, Validators.min(1), Validators.max(10)]]
+      subject: [null, Validators.required],
+      classes: [null, Validators.required]
     });
 
     this.searchForm = this.formBuilder.group({
@@ -85,8 +83,7 @@ export class ListaAlumnosComponent {
     if (this.students) {
       return this.students.filter(
         (student: StudentInterface) =>
-          student.name.toLowerCase().includes(query.toLowerCase()) ||
-          student.lastname.toLowerCase().includes(query.toLowerCase())
+          student.subject.toLowerCase().includes(query.toLowerCase())
       );
     }
     return [];

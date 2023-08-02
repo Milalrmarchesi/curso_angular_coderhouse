@@ -15,7 +15,15 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent
-      },      
+      },
+      { 
+        path: 'clases', 
+        loadChildren: () => import('./pages/clases/clases.module').then((m) => m.ClasesModule) 
+      },
+      { 
+        path: 'cursos', 
+        loadChildren: () => import('./pages/cursos/cursos.module').then((m) => m.CursosModule) 
+      },                      
     ],
   },
 ];

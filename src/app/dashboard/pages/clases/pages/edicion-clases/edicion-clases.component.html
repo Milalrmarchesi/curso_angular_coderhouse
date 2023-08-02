@@ -1,0 +1,35 @@
+<div>
+    <form [formGroup]="clasesEditForm" (ngSubmit)="saveEditedClase()" class="needs-validation" novalidate>      
+      <div class="form-group mb-2">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" formControlName="subject" class="form-control" required />
+            <div *ngIf="clasesEditForm.get('subject')?.invalid && (clasesEditForm.get('subject')?.dirty || clasesEditForm.get('subject')?.touched)" class="alert alert-danger">
+              <div *ngIf="clasesEditForm.get('subject')?.errors?.['required']">
+                  Subject is required
+              </div>
+            </div>
+      </div>
+    
+      <div class="form-group mb-2">
+          <label for="teacher">Teacher:</label>
+          <input type="text" id="teacher" formControlName="teacher" class="form-control" required />
+          <div *ngIf="clasesEditForm.get('teacher')?.invalid && (clasesEditForm.get('teacher')?.dirty || clasesEditForm.get('teacher')?.touched)" class="alert alert-danger">
+              <div *ngIf="clasesEditForm.get('teacher')?.errors?.['required']">
+                Teacher is required
+              </div>
+          </div>
+      </div>
+    
+      <div class="form-group mb-2">
+        <label for="schedule">Schedule:</label>
+        <input type="schedule" id="schedule" formControlName="schedule" class="form-control" required />
+        <div *ngIf="clasesEditForm.get('schedule')?.invalid && (clasesEditForm.get('schedule')?.dirty || clasesEditForm.get('schedule')?.touched)" class="alert alert-danger">
+              <div *ngIf="clasesEditForm.get('schedule')?.errors?.['required']">
+                Schedule is required
+              </div>
+        </div>
+      </div>
+      
+      <button type="submit" [disabled]="!clasesEditForm.valid" class="btn btn-primary">Save</button>
+    </form>
+</div>
