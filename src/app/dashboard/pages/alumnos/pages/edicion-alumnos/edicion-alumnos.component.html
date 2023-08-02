@@ -1,0 +1,45 @@
+<div>
+    <form [formGroup]="studentEditForm" (ngSubmit)="saveEditedStudent()" class="needs-validation" novalidate>      
+      <div class="form-group mb-2">
+        <label for="name">Name:</label>
+        <input type="text" id="name" formControlName="name" class="form-control" required />
+            <div *ngIf="studentEditForm.get('name')?.invalid && (studentEditForm.get('name')?.dirty || studentEditForm.get('name')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentEditForm.get('name')?.errors?.['required']">
+                  Name is required
+              </div>
+            </div>
+      </div>
+    
+      <div class="form-group mb-2">
+          <label for="lastname">Last name:</label>
+          <input type="text" id="lastname" formControlName="lastname" class="form-control" required />
+          <div *ngIf="studentEditForm.get('lastname')?.invalid && (studentEditForm.get('lastname')?.dirty || studentEditForm.get('lastname')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentEditForm.get('lastname')?.errors?.['required']">
+                Last name is required
+              </div>
+          </div>
+      </div>
+    
+      <div class="form-group mb-2">
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" class="form-control" required />
+        <div *ngIf="studentEditForm.get('email')?.invalid && (studentEditForm.get('email')?.dirty || studentEditForm.get('email')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentEditForm.get('email')?.errors?.['required']">
+                Email is required and must be a valid email address
+              </div>
+        </div>
+      </div>
+    
+      <div class="form-group mb-2">
+        <label for="score">Score:</label>
+        <input type="number" id="score" formControlName="score" class="form-control" required />
+        <div *ngIf="studentEditForm.get('score')?.invalid && (studentEditForm.get('score')?.dirty || studentEditForm.get('score')?.touched)" class="alert alert-danger">
+              <div *ngIf="studentEditForm.get('score')?.errors?.['required']">
+                Score is required and must be a number
+              </div>
+        </div>
+      </div>
+    
+      <button type="submit" [disabled]="!studentEditForm.valid" class="btn btn-primary">Save</button>
+    </form>
+</div>
