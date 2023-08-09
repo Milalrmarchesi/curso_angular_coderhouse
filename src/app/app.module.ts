@@ -8,6 +8,8 @@ import { MaterialModule } from './modules/material/material.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,15 @@ import { DashboardModule } from './dashboard/dashboard.module';
     DashboardModule,
     MaterialModule,
     CoreModule,
-    SharedModule
+    SharedModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+      }
+    }),
+    AuthModule,     
   ],
   providers: [],
   bootstrap: [AppComponent]

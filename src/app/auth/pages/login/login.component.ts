@@ -1,17 +1,32 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
+  loginForm: FormGroup;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+    ) {
+    this.loginForm = this.formBuilder.group({
+      userId: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+    localStorage.setItem('token', '');
+  }
 
   onSubmit() {
-    // Aquí puedes agregar la lógica para autenticar al usuario
-    // utilizando los valores de 'username' y 'password'
+    if (this.loginForm.valid) {
+      const userId = this.loginForm.value.userId;
+      const password = this.loginForm.value.password;
+      this.authService.login(userId, password);
+    }    
   }
 }
