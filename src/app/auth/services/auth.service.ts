@@ -16,7 +16,7 @@ export class AuthService {
   ) { }
 
   isAuthenticated(): Observable<boolean> {
-    
+    let token = localStorage.getItem('token') || '';
     return this.httpClient.get<User[]>(environment.apiUrl + '/users').pipe(
       map((usersResult) => {
 
