@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentInterface } from '../../interfaces/student.interface';
 import { AlumnosService } from '../../services/alumnos.service';
@@ -7,6 +7,9 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operato
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetalleAlumnosComponent } from '../detalle-alumnos/detalle-alumnos.component';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { User } from '../../../users/models/user';
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -20,9 +23,13 @@ export class ListaAlumnosComponent {
   searchForm!: FormGroup;
   filteredStudents$!: Observable<StudentInterface[]>;
   students: StudentInterface[] = [];
-  
-  constructor(private formBuilder: FormBuilder, private studentsService: AlumnosService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute) {}
-
+  currentUserSession!: User;
+  private subscription: Subscription;  
+  constructor(private formBuilder: FormBuilder, private studentsService: AlumnosService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
+    this.subscription = this.authService.sessionObservable.subscribe((value) => {
+      this.currentUserSession = value;
+    });
+  }
   ngOnInit() {
     this.loadStudents();
     this.initializeForm();
@@ -116,4 +123,13 @@ export class ListaAlumnosComponent {
       data: student_param 
     });
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  check_admin(){
+    return 'role' in this.currentUserSession && this.currentUserSession['role'] == 'admin'
+  }
+
 }

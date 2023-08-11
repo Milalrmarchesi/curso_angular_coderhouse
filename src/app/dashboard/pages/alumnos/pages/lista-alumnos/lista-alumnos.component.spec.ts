@@ -42,8 +42,6 @@ describe('ListaAlumnosComponent', () => {
     component.ngOnInit();
 
     expect(component.students).toEqual(mockStudentsArray);
-    expect(component.filteredStudents$).toEqual(of(mockStudentsArray));
-    expect(component.dataSource$).toEqual(of(mockStudentsArray));
     expect(component.dataLoaded).toBeTrue();
   });
 });

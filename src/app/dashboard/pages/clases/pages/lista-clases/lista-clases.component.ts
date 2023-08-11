@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClasesInterface } from '../../interfaces/clases.interface';
 import { ClasesService } from '../../services/clases.service';
@@ -7,6 +7,9 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operato
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetalleClasesComponent } from '../detalle-clases/detalle-clases.component';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { User } from '../../../users/models/user';
 
 @Component({
   selector: 'app-lista-clases',
@@ -20,9 +23,14 @@ export class ListaClasesComponent {
   searchForm!: FormGroup;
   filteredClases$!: Observable<ClasesInterface[]>;
   clases: ClasesInterface[] = [];
-  
-  constructor(private formBuilder: FormBuilder, private clasesService: ClasesService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute) {}
+  currentUserSession!: User;
+  private subscription: Subscription;  
 
+  constructor(private formBuilder: FormBuilder, private clasesService: ClasesService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
+    this.subscription = this.authService.sessionObservable.subscribe((value) => {
+      this.currentUserSession = value;
+    });
+  }
   ngOnInit() {
     this.loadClases();
     this.initializeForm();
@@ -115,4 +123,13 @@ export class ListaClasesComponent {
       data: clase_param 
     });
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  check_admin(){
+    return 'role' in this.currentUserSession && this.currentUserSession['role'] == 'admin'
+  }
+
 }

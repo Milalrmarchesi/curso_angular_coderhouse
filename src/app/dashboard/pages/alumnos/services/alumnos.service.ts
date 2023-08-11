@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { of, interval, Observable, from } from 'rxjs';
 import { mergeMap, map, filter, delay, toArray, take} from 'rxjs/operators';
 import { StudentInterface } from '../interfaces/student.interface'
+import { ClasesService } from '../../clases/services/clases.service'; 
 
+
+interface StudentsClasses {
+  [studentId: number]: number[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +25,8 @@ export class AlumnosService {
       {id: 7, name: 'Juan', lastname: "Mezzetti", email: 'jm@gmail.com', score: 9, enabled: false}
   ]
   current!: StudentInterface;
-  constructor() { }
+  students_classes: StudentsClasses = {0: [1, 2], 1: [3, 2], 2: [1, 4], 3: [1, 2, 4], 4: [4, 2], 5: [1, 2], 6: [3, 2], 7: [4, 2]};
+  constructor(clasesService: ClasesService) { }
 
 
 
@@ -65,6 +71,20 @@ export class AlumnosService {
         break;
       }
     }
+  }
+
+
+  get_classes_by_student(student:StudentInterface){
+    if(student.id in this.students_classes){
+      return this.students_classes[student.id];
+    }else{
+      return [];
+    }
+  }
+
+  unsuscribe_student_class(student:StudentInterface, class_id:number){
+    this.students_classes[student.id] = this.students_classes[student.id].filter((row) => row != class_id);
+    console.log(this.students_classes[student.id]);
   }
 
 }

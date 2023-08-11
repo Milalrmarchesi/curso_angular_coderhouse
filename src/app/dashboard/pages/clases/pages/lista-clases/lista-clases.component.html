@@ -24,8 +24,8 @@
               <td>{{ clases.teacher }}</td>
               <td>{{ clases.schedule }}</td>
               <td>
-                <button class="btn btn-edit" (click)="editClase(clases)">Edit</button>
-                <button class="btn btn-delete" (click)="deleteClase(clases.id)">Delete</button>
+                <button class="btn btn-edit" (click)="editClase(clases)" *ngIf="check_admin()">Edit</button>
+                <button class="btn btn-delete" (click)="deleteClase(clases.id)" *ngIf="check_admin()">Delete</button>
                 <button class="btn btn-edit" (click)="showClaseDetails(clases)">Show</button>
               </td>
             </tr>

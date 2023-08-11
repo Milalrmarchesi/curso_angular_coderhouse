@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { Observable, map, of, catchError } from "rxjs";
+import { Observable, map, of, catchError, BehaviorSubject } from "rxjs";
 import { User } from "../../dashboard/pages/users/models/user";
 import { Token } from "../../dashboard/pages/users/models/token";
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -11,12 +11,30 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class AuthService {
-
+  private dataSession: BehaviorSubject<User> = new BehaviorSubject<User>({
+    id: 0,
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    address: "",
+    avatar: "",
+    createdAt: ""
+  });
+  
   constructor(
     private router: Router,
     private httpClient: HttpClient,
     private jwtHelper: JwtHelperService    
   ) { }
+
+  get sessionObservable(): Observable<User> {
+    return this.dataSession.asObservable();
+  }
+
+  updateValue(newValue: User): void {
+    this.dataSession.next(newValue);
+  }
 
   isAuthenticated(): Observable<boolean> {
     let token = localStorage.getItem('token') || '';
@@ -28,10 +46,14 @@ export class AuthService {
             console.log("tokensResult: ", result);
             return true
           }else{
+            console.log("FALSE 1")
             return false
           }
         }),
-        catchError(() => of(false))
+        catchError(() => {
+          console.log("FALSE 2")
+          return of(false)
+        })
       )
     } else {
       return of(false);
@@ -43,14 +65,17 @@ export class AuthService {
       const response = await this.httpClient.get<User>(environment.apiUrl + 'users/' + id_username).toPromise();
       if (response && response["password"] == password) {
         const token = await this.createAndSaveToken(response);
-        this.router.navigate(['/dashboard/home']); // Navegar a la ruta correcta
+        this.updateValue(response);
         localStorage.setItem('token', token);
+        this.router.navigate(['/dashboard/home']); // Navegar a la ruta correcta
       } else {
         console.log("Login incorrecto");
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         console.log('Ocurrió un error inesperado');
+      }else{
+        console.log(error);
       }
     }
   }

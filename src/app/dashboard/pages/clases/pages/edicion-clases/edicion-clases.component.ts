@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClasesService } from '../../services/clases.service';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -20,12 +19,12 @@ export class EdicionClasesComponent {
 
   initializeForm() {
     this.clasesEditForm = this.formBuilder.group({
-      subject: [null, Validators.required],
-      teacher: [null, Validators.required],
-      schedule: [null, [Validators.required]],
+      subject: ['', Validators.required],
+      teacher: ['', Validators.required],
+      schedule: ['', [Validators.required]],
     });
     let clase = this.clasesService.current;
-    let data_to_set = {subject: clase.subject, teacher: clase.teacher, schedule: clase.schedule}
+    let data_to_set = {subject: clase?.subject, teacher: clase?.teacher, schedule: clase?.schedule}
     this.clasesEditForm.setValue(data_to_set);
   }
 

@@ -4,6 +4,8 @@
           <mat-icon>menu</mat-icon>
         </button>
         <span (click)="abrirHome()" class="span-hover">Students management</span>
+        <span class="right-align">{{currentRouteSegment}}</span>
+        <span class="right-align">{{currentUser}}</span>
     </mat-toolbar>      
 </div>
 <mat-drawer-container class="example-container" autosize>
@@ -19,8 +21,16 @@
       <div (click)="abrirCursos()" class="button-menu">
         <span class="span-hover">Courses</span>
       </div>
+      <hr>
+      <div (click)="abrirCursos()" class="button-menu" *ngIf="check_admin()">
+        <span class="span-hover">Users</span>
+        <hr>  
+      </div>  
+      <div (click)="logout()" class="button-menu">
+        <span class="span-hover">logout</span>
+      </div>
       <hr>      
-    </mat-drawer> 
+    </mat-drawer>      
     <div class="example-sidenav-content main-content">
       <!--
       <app-home *ngIf="showHome" style="width: 100%;"></app-home>

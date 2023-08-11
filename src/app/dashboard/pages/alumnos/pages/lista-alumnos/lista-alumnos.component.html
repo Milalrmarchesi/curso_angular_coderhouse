@@ -24,8 +24,8 @@
               <td>{{ student.email }}</td>
               <td>{{ student.score }}</td>
               <td>
-                <button class="btn btn-edit" (click)="editStudent(student)">Edit</button>
-                <button class="btn btn-delete" (click)="deleteStudent(student.id)">Delete</button>
+                <button class="btn btn-edit" (click)="editStudent(student)" *ngIf="check_admin()">Edit</button>
+                <button class="btn btn-delete" (click)="deleteStudent(student.id)" *ngIf="check_admin()">Delete</button>
                 <button class="btn btn-edit" (click)="showStudentDetails(student)">Show</button>
               </td>
             </tr>

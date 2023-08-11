@@ -7,6 +7,13 @@
   <p class="modal-content"><strong>Email:</strong> {{ data.email }}</p>
   <br/>
   <p class="modal-content"><strong>Score:</strong> {{ data.score }}</p>
+  <br />
+  <span>MATERIAS Inscripto:</span>
+  <hr>
+  <div *ngFor="let curso of cursos">
+    <span>{{curso}} <button class="btn btn-primary" (click)="eliminar(curso)" style="margin-left: 1rem;">Unsuscribe</button></span>
+    <br>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close class="btn btn-secondary">Close</button>

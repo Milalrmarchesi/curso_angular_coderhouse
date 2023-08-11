@@ -27,7 +27,9 @@ export class EdicionAlumnosComponent {
     });
     let student = this.studentsService.current;
     let data_to_set = {name: student.name, lastname: student.lastname, email: student.email, score: student.score}
-    this.studentEditForm.setValue(data_to_set);
+    if(student){
+      this.studentEditForm.setValue(data_to_set);
+    }
   }
 
   saveEditedStudent() {
