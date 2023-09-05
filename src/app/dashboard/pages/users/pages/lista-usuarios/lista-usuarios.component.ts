@@ -24,7 +24,7 @@ export class ListaUsuariosComponent {
   ngOnInit() {
     this.users$ = this.store.select(selectListUsers);
     console.log("Dispatching store of users: ")
-    this.store.dispatch(userListLoad({ users: null }));
+    this.store.dispatch(userListLoad());
   }
   
 }

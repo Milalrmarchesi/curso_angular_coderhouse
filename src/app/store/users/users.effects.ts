@@ -13,7 +13,7 @@ export class UsersEffects {
         ofType(userListActions.userListLoad),
         mergeMap(() => from(this.userService.getAllUsers())
             .pipe(
-                map(users => ({type: '[Users List] Loaded Success', users}))
+                map(users => (userListActions.userListStore({users: users})))
             )
         )
     ));
