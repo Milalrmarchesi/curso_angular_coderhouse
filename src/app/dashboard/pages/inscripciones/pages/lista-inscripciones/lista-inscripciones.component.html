@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-12" style="width: 50rem">
+      <h1 bigTitle>List of enrollments</h1>
+      <mat-progress-bar mode="indeterminate" *ngIf="!(dataLoaded$ | async); else contentClases"></mat-progress-bar>
+      <ng-template #contentClases>
+        <div class="row">
+          <div *ngIf="(enrollments$ | async) as enrollments" class="col-12">
+            <ul>
+              <li *ngFor="let enrollment of enrollments">
+                {{ enrollment.student.name }}: {{ enrollment.course.subject }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </ng-template>  
+    </div>
+</div>

@@ -71,6 +71,10 @@ export class LayoutComponent {
     this.router.navigate(['/dashboard', 'usuarios']);
   }
 
+  abrirInscripciones(): void {
+    this.router.navigate(['/dashboard', 'inscripciones']);
+  }
+
   logout(): void {
     this.router.navigate(['auth', 'login'], {})
     this.store.dispatch(authUserLogout());

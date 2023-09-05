@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LayoutComponent } from './layout/layout.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AlumnosModule } from './pages/alumnos/alumnos.module';
-import { ClasesModule } from './pages/clases/clases.module';
+import { InscripcionesModule } from './pages/inscripciones/inscripciones.module';
 import { CursosModule } from './pages/cursos/cursos.module'; 
 import { UsersModule } from './pages/users/users.module';
 
@@ -20,7 +20,7 @@ import { UsersModule } from './pages/users/users.module';
     ReactiveFormsModule,
     DashboardRoutingModule,
     AlumnosModule,
-    ClasesModule,
+    InscripcionesModule,
     CursosModule,
     UsersModule
   ]

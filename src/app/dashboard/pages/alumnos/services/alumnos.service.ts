@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { of, interval, Observable, from } from 'rxjs';
 import { mergeMap, map, filter, delay, toArray, take} from 'rxjs/operators';
 import { StudentInterface } from '../interfaces/student.interface'
-import { ClasesService } from '../../clases/services/clases.service'; 
+import { InscripcionesService } from '../../inscripciones/services/inscripciones.service'; 
 
 
 interface StudentsClasses {
@@ -26,7 +26,7 @@ export class AlumnosService {
   ]
   current!: StudentInterface;
   students_classes: StudentsClasses = {0: [1, 2], 1: [3, 2], 2: [1, 4], 3: [1, 2, 4], 4: [4, 2], 5: [1, 2], 6: [3, 2], 7: [4, 2]};
-  constructor(clasesService: ClasesService) { }
+  constructor(clasesService: InscripcionesService) { }
 
 
 

@@ -1,28 +1,26 @@
 <div class="row">
     <div class="col-12" style="width: 50rem">
-      <h1 bigTitle>List of students</h1>
+      <h1 bigTitle>List of courses</h1>
       <mat-progress-bar mode="indeterminate" *ngIf="!dataLoaded; else contentStudents"></mat-progress-bar>
       <ng-template #contentStudents>
-        <button class="btn btn-dark mb-4" (click)="addNewStudent()">Add new student</button>
+        <button class="btn btn-dark mb-4" (click)="addNewStudent()">Add new course</button>
         <form [formGroup]="searchForm" class="form-inline my-2 my-lg-0 mb-1">
-          <input type="text" formControlName="searchQuery" class="form-control mr-sm-2" placeholder="Search by name or lastname">
+          <input type="text" formControlName="searchQuery" class="form-control mr-sm-2" placeholder="Search by subject">
         </form>
         <table class="custom-table mt-2">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Score</th>
+              <th>Subject</th>
+              <th>Classes</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let student of filteredStudents$ | async">
               <td>{{ student.id }}</td>
-              <td (click)="showStudentDetails(student)" style="cursor:pointer">{{ student.name }} {{ student.lastname }}</td>
-              <td>{{ student.email }}</td>
-              <td>{{ student.score }}</td>
+              <td (click)="showStudentDetails(student)" style="cursor:pointer">{{ student.subject }}</td>
+              <td>{{ student.classes }}</td>
               <td>
                 <button class="btn btn-edit" (click)="editStudent(student)" *ngIf="isAdmin$ | async">Edit</button>
                 <button class="btn btn-delete" (click)="deleteStudent(student.id)" *ngIf="isAdmin$ | async">Delete</button>

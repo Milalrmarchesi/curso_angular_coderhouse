@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StudentInterface } from '../../interfaces/student.interface';
-import { AlumnosService } from '../../services/alumnos.service';
+import { CourseInterface } from '../../models/curso.interface';
+import { CursosService } from '../../services/cursos.service';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DetalleAlumnosComponent } from '../detalle-alumnos/detalle-alumnos.component';
+import { DetalleCursoComponent } from '../detalle-curso/detalle-curso.component';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { User } from '../../../users/models/user';
@@ -14,26 +14,27 @@ import { Store } from '@ngrx/store';
 import { selectIsAdmin } from 'src/app/store/auth/auth.selectors';
 
 @Component({
-  selector: 'app-lista-alumnos',
-  templateUrl: './lista-alumnos.component.html',
-  styleUrls: ['./lista-alumnos.component.scss']
+  selector: 'app-lista-cursos',
+  templateUrl: './lista-cursos.component.html',
+  styleUrls: ['./lista-cursos.component.scss']
 })
-export class ListaAlumnosComponent {
-  dataSource$!: Observable<StudentInterface[]>;
+export class ListaCursosComponent {
+  dataSource$!: Observable<CourseInterface[]>;
   studentForm!: FormGroup;
   dataLoaded: boolean = false;
   searchForm!: FormGroup;
-  filteredStudents$!: Observable<StudentInterface[]>;
-  students: StudentInterface[] = [];
+  filteredStudents$!: Observable<CourseInterface[]>;
+  students: CourseInterface[] = [];
   currentUserSession!: User;
-  private subscription: Subscription;
-  
+  private subscription: Subscription;  
   isAdmin$: Observable<boolean> = new Observable();
-  constructor(private store:Store<any>, private formBuilder: FormBuilder, private studentsService: AlumnosService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
+
+  constructor(private store:Store<any>, private formBuilder: FormBuilder, private cursosService: CursosService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
     this.subscription = this.authService.sessionObservable.subscribe((value) => {
       this.currentUserSession = value;
-    });
+    });  
   }
+
   ngOnInit() {
     this.isAdmin$ = this.store.select(selectIsAdmin);
     this.loadStudents();
@@ -45,7 +46,7 @@ export class ListaAlumnosComponent {
   loadStudents() {
     this.dataLoaded = false;
   
-    this.studentsService.getData().subscribe((studentsArray) => {
+    this.cursosService.getData().subscribe((studentsArray) => {
       this.students = studentsArray;
       this.filteredStudents$ = of(studentsArray);
       this.dataSource$ = of(studentsArray);   
@@ -56,10 +57,8 @@ export class ListaAlumnosComponent {
   initializeForm() {
 
     this.studentForm = this.formBuilder.group({
-      name: [null, Validators.required],
-      lastname: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      score: [null, [Validators.required, Validators.min(1), Validators.max(10)]]
+      subject: [null, Validators.required],
+      classes: [null, Validators.required]
     });
 
     this.searchForm = this.formBuilder.group({
@@ -96,9 +95,8 @@ export class ListaAlumnosComponent {
   filterStudents(query: string) {
     if (this.students) {
       return this.students.filter(
-        (student: StudentInterface) =>
-          student.name.toLowerCase().includes(query.toLowerCase()) ||
-          student.lastname.toLowerCase().includes(query.toLowerCase())
+        (student: CourseInterface) =>
+          student.subject.toLowerCase().includes(query.toLowerCase())
       );
     }
     return [];
@@ -108,8 +106,8 @@ export class ListaAlumnosComponent {
     this.router.navigate(['agregar'], { relativeTo: this.route });
   }
 
-  editStudent(student:StudentInterface){
-    this.studentsService.current = student;
+  editStudent(student:CourseInterface){
+    this.cursosService.current = student;
     this.router.navigate(['editar'], { relativeTo: this.route });
   }
 
@@ -119,11 +117,11 @@ export class ListaAlumnosComponent {
     this.filteredStudents$ = this.filteredStudents$.pipe(
       map((students) => students.filter((student) => student.id !== student_id))
     );
-    this.studentsService.deleteStudent(student_id);
+    this.cursosService.deleteStudent(student_id);
   }
 
-  showStudentDetails(student_param: StudentInterface) {
-    const dialogRef = this.dialog.open(DetalleAlumnosComponent, {
+  showStudentDetails(student_param: CourseInterface) {
+    const dialogRef = this.dialog.open(DetalleCursoComponent, {
       width: '30rem',
       data: student_param 
     });

@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListaAlumnosComponent } from './pages/lista-alumnos/lista-alumnos.component';
-import { EdicionAlumnosComponent } from './pages/edicion-alumnos/edicion-alumnos.component';
-import { AgregarAlumnosComponent } from './pages/agregar-alumnos/agregar-alumnos.component';
-import { DetalleAlumnosComponent } from './pages/detalle-alumnos/detalle-alumnos.component';
+import { ListaCursosComponent } from './pages/lista-curso/lista-cursos.component';
+import { EdicionCursoComponent } from './pages/edicion-curso/edicion-curso.component';
+import { AgregarCursoComponent } from './pages/agregar-curso/agregar-curso.component';
+import { DetalleCursoComponent } from './pages/detalle-curso/detalle-curso.component';
 import { MaterialModule } from '../../../modules/material/material.module';
-import { AlumnosRoutingModule } from './alumnos-routing.module';
+import { AlumnosRoutingModule } from './cursos-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    ListaAlumnosComponent,
-    EdicionAlumnosComponent,
-    AgregarAlumnosComponent,
-    DetalleAlumnosComponent
+    ListaCursosComponent,
+    EdicionCursoComponent,
+    AgregarCursoComponent,
+    DetalleCursoComponent
   ],
   imports: [
     CommonModule,

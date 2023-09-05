@@ -16,6 +16,7 @@ import { ROOT_REDUCERS } from './store/app.state';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/auth/auth.effects';
 import { UsersEffects } from './store/users/users.effects';
+import { EnrollmentsEffects } from './store/inscripciones/inscripciones.effects';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { UsersEffects } from './store/users/users.effects';
     AuthModule,
     StoreModule.forRoot(ROOT_REDUCERS),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-    EffectsModule.forRoot([AuthEffects, UsersEffects ]),     
+    EffectsModule.forRoot([AuthEffects, UsersEffects, EnrollmentsEffects]),     
   ],
   providers: [],
   bootstrap: [AppComponent]
