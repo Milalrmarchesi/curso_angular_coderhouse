@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +10,12 @@ import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@auth0/angular-jwt';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ROOT_REDUCERS } from './store/app.state';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './store/auth/auth.effects';
+import { UsersEffects } from './store/users/users.effects';
 
 @NgModule({
   declarations: [
@@ -30,7 +36,10 @@ import { JwtModule } from '@auth0/angular-jwt';
         },
       }
     }),
-    AuthModule,     
+    AuthModule,
+    StoreModule.forRoot(ROOT_REDUCERS),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    EffectsModule.forRoot([AuthEffects, UsersEffects ]),     
   ],
   providers: [],
   bootstrap: [AppComponent]

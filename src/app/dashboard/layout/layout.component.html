@@ -14,15 +14,15 @@
         <span class="span-hover">Students</span>
       </div>
       <hr>
-      <div (click)="abrirClases()" class="button-menu">
-        <span class="span-hover">Classes</span>
-      </div>
-      <hr>
       <div (click)="abrirCursos()" class="button-menu">
         <span class="span-hover">Courses</span>
       </div>
       <hr>
-      <div (click)="abrirCursos()" class="button-menu" *ngIf="check_admin()">
+      <div (click)="abrirCursos()" class="button-menu">
+        <span class="span-hover">Enrollments</span>
+      </div>
+      <hr>      
+      <div (click)="abrirUsuarios()" class="button-menu" *ngIf="isAdmin$ | async">
         <span class="span-hover">Users</span>
         <hr>  
       </div>  
@@ -32,10 +32,6 @@
       <hr>      
     </mat-drawer>      
     <div class="example-sidenav-content main-content">
-      <!--
-      <app-home *ngIf="showHome" style="width: 100%;"></app-home>
-      <app-lista-alumnos *ngIf="showAlumnos"></app-lista-alumnos>
-      -->
       <router-outlet></router-outlet>
     </div>
 </mat-drawer-container>

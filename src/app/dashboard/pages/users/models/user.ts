@@ -7,4 +7,5 @@ export interface User {
     address: string;
     avatar: string;
     createdAt: string;
-  }
+    role: string;
+}

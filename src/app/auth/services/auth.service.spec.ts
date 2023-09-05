@@ -46,6 +46,7 @@ describe('AuthService', () => {
       address: 'Avenida siempre viva',
       avatar: 'avatar.jpg',
       createdAt: '2023-08-10T00:00:00Z',
+      role: "ADMINISTRADOR"
     };      
     const token = 'test-token';
     service.login('test', 'password');
@@ -73,6 +74,7 @@ describe('AuthService', () => {
       address: 'Avenida siempre viva',
       avatar: 'avatar.jpg',
       createdAt: '2023-08-10T00:00:00Z',
+      role: "ADMINISTRADOR"
     };    
     service.login('test', 'incorrect-password');
     // Mock the HTTP response

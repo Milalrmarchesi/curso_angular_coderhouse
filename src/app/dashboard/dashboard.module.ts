@@ -8,6 +8,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AlumnosModule } from './pages/alumnos/alumnos.module';
 import { ClasesModule } from './pages/clases/clases.module';
 import { CursosModule } from './pages/cursos/cursos.module'; 
+import { UsersModule } from './pages/users/users.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CursosModule } from './pages/cursos/cursos.module';
     DashboardRoutingModule,
     AlumnosModule,
     ClasesModule,
-    CursosModule
+    CursosModule,
+    UsersModule
   ]
 })
 export class DashboardModule { }
