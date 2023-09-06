@@ -2,6 +2,12 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { StudentInterface } from '../../interfaces/student.interface'; 
 import { AlumnosService } from '../../services/alumnos.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectListEnrollments } from 'src/app/store/inscripciones/inscripciones.selectors';
+import { InscripcionesInterface } from '../../../inscripciones/models/inscripciones.interface';
+import { inscripcionesDelete, inscripcionesListLoad, inscripcionesListStore } from 'src/app/store/inscripciones/inscripciones.actions';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detalle-alumnos',
@@ -11,12 +17,20 @@ import { AlumnosService } from '../../services/alumnos.service';
 
 export class DetalleAlumnosComponent {
   cursos: number[] = [];
-  constructor(private alumnosService: AlumnosService, @Inject(MAT_DIALOG_DATA) public data: StudentInterface) {
-    this.cursos = this.alumnosService.get_classes_by_student(data);
+  enrollments$: Observable<any> = new Observable();
+
+  constructor(private store:Store<any>, private alumnosService: AlumnosService, @Inject(MAT_DIALOG_DATA) public data: StudentInterface) {
   }
 
-  eliminar(curso:number){
-    this.alumnosService.unsuscribe_student_class(this.data, curso);
-    this.cursos = this.alumnosService.get_classes_by_student(this.data);
+  ngOnInit() {
+    this.enrollments$ = this.store.select(selectListEnrollments);
+    this.store.dispatch(inscripcionesListLoad())
+  }
+
+  eliminar(enrollment: InscripcionesInterface | null){
+    if (enrollment) {
+      this.store.dispatch(inscripcionesDelete({ enrollment }));
+      this.store.dispatch(inscripcionesListLoad())
+    }
   }
 }

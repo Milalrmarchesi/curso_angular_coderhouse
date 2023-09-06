@@ -7,6 +7,17 @@ export const inscripcionesListLoad = createAction(
 )
 
 export const inscripcionesListStore = createAction(
-  '[Inscripciones List] Inscripciones Cargadas',
-  props<{enrollments: Array<InscripcionesInterface> | null, loading: boolean}>()
+  '[Inscripciones Store] Inscripciones Cargadas',
+  props<{ enrollments: InscripcionesInterface[] | null; loading: boolean }>()
+);
+
+export const inscripcionesDelete = createAction(
+  '[Inscripciones Delete] Inscripcion elminada',
+  props<{enrollment: InscripcionesInterface | null}>()
+)
+
+
+export const inscripcionesPut = createAction(
+  '[Inscripciones Put] Inscripcion agregada',
+  props<{enrollment: InscripcionesInterface | null}>()
 )

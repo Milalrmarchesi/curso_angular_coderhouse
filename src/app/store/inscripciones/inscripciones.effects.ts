@@ -18,7 +18,46 @@ export class EnrollmentsEffects {
             )
         )
     ));
-
+    deleteEnrollment = createEffect(() =>
+        this.actions.pipe(
+            ofType(inscripcionesListActions.inscripcionesDelete),
+            mergeMap((action) => {
+                if (action.enrollment) {
+                return from(this.inscripcionesService.deleteEnrollment(action.enrollment)).pipe(
+                    map((enrollments) =>
+                    inscripcionesListActions.inscripcionesListStore({
+                        enrollments,
+                        loading: false,
+                    })
+                    )
+                );
+                } else {
+                    return of({ type: 'EMPTY_ACTION' });
+                }
+            })
+        ),
+        { dispatch: false }
+    );
+    addEnrollment = createEffect(() =>
+        this.actions.pipe(
+            ofType(inscripcionesListActions.inscripcionesPut),
+            mergeMap((action) => {
+                if (action.enrollment) {
+                return from(this.inscripcionesService.putEnrollment(action.enrollment)).pipe(
+                    map((enrollments) =>
+                    inscripcionesListActions.inscripcionesListStore({
+                        enrollments,
+                        loading: false,
+                    })
+                    )
+                );
+                } else {
+                    return of({ type: 'EMPTY_ACTION' });
+                }
+            })
+        ),
+        { dispatch: false }
+    );    
 }
 
 

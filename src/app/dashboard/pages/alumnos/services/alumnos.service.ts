@@ -20,7 +20,7 @@ export class AlumnosService {
       {id: 2, name: 'Facundo', lastname: "Gomez", email: 'facu@gmail.com', score: 7, enabled: true},
       {id: 3, name: 'Morena', lastname: "Rial", email: 'more@gmail.com', score: 9, enabled: true},
       {id: 4, name: 'Lisa', lastname: "Althabe", email: 'lisAlt@gmail.com', score: 5, enabled: true},
-      {id: 5, name: 'Brenda', lastname: "Chiaia", email: 'brenChi@gmail.com', score: 4, enabled: false},
+      {id: 5, name: 'Brenda', lastname: "Chiaia", email: 'brenChi@gmail.com', score: 4, enabled: true},
       {id: 6, name: 'Agus', lastname: "Izzi", email: 'Izziagustin@gmail.com', score: 7, enabled: true},
       {id: 7, name: 'Juan', lastname: "Mezzetti", email: 'jm@gmail.com', score: 9, enabled: false}
   ]
