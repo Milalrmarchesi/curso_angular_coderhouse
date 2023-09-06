@@ -2,7 +2,13 @@
 <mat-dialog-content>
   <p class="modal-content"><strong>Subject:</strong> {{ data.subject }}</p>
   <br/>
-  <p class="modal-content"><strong>Classes:</strong> {{ data.classes }}</p>
+  <span>Alumnos inscriptos:</span>
+  <hr>
+  <div *ngIf="(enrollments$ | async) as enrollments" class="col-12">
+    <div *ngFor="let enrollment of enrollments">
+      <span *ngIf="enrollment.course.id == data.id">{{ enrollment.student.name }} <button class="btn btn-primary btn-sm" (click)="eliminar(enrollment)" style="margin-left: 1rem; margin-bottom: 1rem">Unsuscribe</button></span>
+    </div>
+  </div>
   <br/>
 </mat-dialog-content>
 <mat-dialog-actions>

@@ -12,7 +12,6 @@
             <tr>
               <th>ID</th>
               <th>Subject</th>
-              <th>Classes</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -20,7 +19,6 @@
             <tr *ngFor="let student of filteredStudents$ | async">
               <td>{{ student.id }}</td>
               <td (click)="showStudentDetails(student)" style="cursor:pointer">{{ student.subject }}</td>
-              <td>{{ student.classes }}</td>
               <td>
                 <button class="btn btn-edit" (click)="editStudent(student)" *ngIf="isAdmin$ | async">Edit</button>
                 <button class="btn btn-delete" (click)="deleteStudent(student.id)" *ngIf="isAdmin$ | async">Delete</button>
